@@ -1,0 +1,584 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face{
+    font-family: 'Espionage', sans-serif;
+    font-family: 'Metal Gear', sans-serif;
+    src:url('http://fonts.cdnfonts.com/css/metal-gear-solid');
+    src: url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+}
+
+@font-face{
+    font-family: 'Metal Gear 2';
+    src:url(../fonts//MGS2.ttf);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    color:white;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+h1 {
+    font-size: 1.3em;
+}
+
+
+/* ========================================== Index ========================================== */
+
+button {
+    font-family: 'Espionage', sans-serif;
+	font-size:16px;
+	font-weight:700;
+    box-shadow:rgba(0,0,0,1) 0 0px 2px 0;
+    color:white;
+    background-color: rgba(0, 0, 0, 0.432);
+    border-radius:3px;
+    border-style: groove;
+    height:32px;
+	padding:4px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: black;
+}
+
+input {
+    font-weight: bold;
+}
+
+.connexion {
+    padding-bottom: 20px;
+    font-family: 'Metal Gear', sans-serif;
+    font-size: 30px;
+}
+
+.error-div {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	border: 1px solid red;
+	padding:5px;
+	border-radius: 3px;
+	background-color: pink;
+	margin-bottom: 20px;
+	color:red;
+}
+
+.form-button {
+    padding-top: 20px;
+}
+
+.form-label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.login-form {
+    width: 200px;
+    padding: 50px;
+    font-family: 'Espionage', sans-serif;
+    background: rgba(22, 22, 58, 0.5);
+    border-radius: 15px ;
+    border-style: groove;
+    text-align: center;
+    order: 2;
+}
+
+.index-column-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title img{
+    height: 60%;
+    width: 60%;
+}
+
+.title {
+    font-family: 'Metal Gear', sans-serif;
+    font-size: 50px;
+    color: black;
+}
+
+.index-row-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper-index{
+    background-color:white;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-image:url('../images/MSG1.png');
+    background-size:40% ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
+/* ========================================== Lobby ========================================== */
+
+.codec {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    animation-name: fadeIn;
+    animation-fill-mode: both;
+    animation-duration: 5s;
+}
+
+.choice {
+    padding-bottom: 10px;
+    cursor: pointer;
+}
+
+div .choice :hover{
+    font-weight: bolder;
+    font-size: 20px;
+    color: red;
+}
+
+.deck-manager{
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 10;
+    margin: 25px;
+    padding: 50px 100px;
+    background: rgba(36, 102, 50, 0.50);
+}
+
+.deck-manager iframe{
+    flex-grow: 5;
+}
+
+.lobby-deck-btn {
+    margin-bottom: auto;
+}
+
+.menu {
+    width: 200px;
+    padding: 50px;
+    font-family: 'Espionage', sans-serif;
+    background: rgba(36, 102, 50, 0.50);
+    border-style: double;
+    text-align: center;
+}
+
+.menu-title {
+    font-family: 'Metal Gear', sans-serif;
+    font-size: 50px;
+}
+
+.wrapper-lobby {
+    background-color:black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    background-image:url('../images/gifs/lobby.gif');
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+}
+
+@keyframes fadeIn {
+    0%   { opacity: 0 ; }
+    25%  { opacity: 0.25 ; }
+    75%  { opacity: 0.75 ; }
+    100% { opacity: 1 ; }
+}
+
+/* ============================================= Jeu ============================================= */
+
+
+.wrapper-jeu {
+    background-color:black;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: top;
+    background-image: url('../images/shadow-moses.jpg');
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ------ Top ------*/
+
+.opponent {
+    display: flex;
+    justify-content: space-between;
+    order: 1;
+    background-color: rgba(128, 128, 128, 0.452);
+    border-bottom: solid black 2px;
+}
+
+.opponent-hand {
+    display: flex;
+}
+
+.opponent-hand-size {
+    background-image: url("../images/handsize.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    min-width: 50px;
+    min-height: 50px;
+    align-self: center;
+}
+
+.opponent-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    position: sticky;
+}
+
+.opponent-info-hp {
+    background-image: url("../images/hp.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:20px;
+    font-weight: bolder;
+}
+
+.opponent-info-mp {
+    background-image: url("../images/mp.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-start;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:20px;
+    font-weight: bolder;
+}
+
+.hero-class-frame{
+    max-width: 160px;
+    max-height: 120px;
+    align-self: flex-end;
+    border: double solid rgba(36, 102, 50) 5px;
+    border-radius: 5px ;
+}
+
+.opponent-cards-remaining {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 60px;
+    min-height: 60px;
+}
+
+/* ------ Board ------*/
+
+.board {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    order: 3;
+}
+
+/* ------ Hand ------ */
+
+.bottom-section {
+    display: flex;
+    justify-content: space-between;
+    order: 4;
+    background-color: rgba(128, 128, 128, 0.452);
+    border-top: solid black 2px;
+}
+
+.info-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.info-hp {
+    background-image: url("../images/hp.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:30px;
+    font-weight: bolder;
+}
+
+.info-mp {
+    background-image: url("../images/mp.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:30px;
+    font-weight: bolder;
+}
+
+.info-cards-remaining {
+    background-image: url("../images/box.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-width: 60px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:30px;
+    font-weight: bolder;
+}
+
+
+#hand {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 800px;
+}
+
+.card-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: black;
+    padding: 10px;
+    border: solid 4px gray;
+    border-style: groove;
+    width: 150px;
+    height: 200px;
+}
+
+#hand .card-frame:hover{
+    transform: translate(0, -10%);
+}
+
+.card-cost {
+    background-image: url("../images/mp.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: inline;
+    position: absolute;
+    min-height: 40px;
+    min-width: 40px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    text-align: center;
+    transform: translate(-75%,-50%);
+}
+
+.card-image-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-image-item {
+    height: 100px;
+    width: 140px;
+}
+
+.card-name{
+    font-family: 'Espionage', sans-serif;
+}
+.card-mechanics{
+    font-size: 12px;
+    font-weight: bolder;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.card-atk {
+    display: inline;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+.card-hp {
+    background-image: url("../images/hp.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    min-width: 40px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+.right-flex {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.right-flex-choice {
+    font-family: 'Espionage', sans-serif;
+	font-size:16px;
+    box-shadow:rgba(0,0,0,1) 0 0px 2px 0;
+    color:white;
+    background-color: rgba(0, 0, 0, 0.432);
+    border-radius:3px;
+    border-style: groove;
+    height:32px;
+    min-width: 150px;
+	padding:4px 10px;
+    text-align: center;
+}
+
+.timer {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:30px;
+}
+
+/* ------ Chat------ */
+
+.toggle-chat {
+    background-image: url("../images/keyboard.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.board-chat {
+    order: 2;
+}
+/* ------ Message Box ------ */
+
+.message-box {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    position: fixed;
+    top:50%;
+    left:50%;
+}
+
+/* ============================================= Notes ============================================= */
+
+.wrapper-notes{
+    background-color: black;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#wrapper-notes .codec {
+    display: flex;
+    flex-direction: column;
+    animation-name: fadeIn;
+    animation-fill-mode: both;
+    animation-duration: 5s;
+    align-self: center;
+}
+
+.codec-top {
+    display: flex;
+}
+
+.codec-middle {
+    height: 250px;
+}
+
+.notes-entry-style {
+    background-color: black;
+    color: white;
+    font-family: 'Inconsolata', monospace;
+    width: 100%;
+}
+
+.notes-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notes-quitter {
+    font-family: 'Espionage', sans-serif;
+	font-size:16px;
+    box-shadow:rgba(0,0,0,1) 0 0px 2px 0;
+    color:white;
+    background-color: rgba(0, 0, 0, 0.432);
+    border: solid 2px;
+    border-radius:3px;
+    border-style: groove;
+	padding:4px 10px;
+    cursor: pointer;
+}
+
+.notes{
+    font-family: 'Inconsolata', monospace;
+    font-weight: bolder;
+    border: solid 4px #274851;
+    background-color: rgba(0, 0, 0, 0.432);
+    min-width: 480px;
+}
+
+.notes-sujet {
+    border: solid 2px gray;
+    text-align: center;
+}
+
+.notes-description {
+    min-height: 50px;
+    display: flex;
+    align-content: center;
+}
