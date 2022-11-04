@@ -1,8 +1,7 @@
 <?php
-    require_once("action/CommonAction.php");
-    require_once("action/JeuAction.php");
+    require_once("action/GameAction.php");
 
-    $action = new JeuAction();
+    $action = new GameAction();
     $data = $action->execute();
 
 

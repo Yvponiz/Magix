@@ -10,7 +10,6 @@ window.addEventListener("load", () => {
 			document.querySelector(".deck-manager").style.display = "none";
 		});
 	}
-
 });
 
 const applyStyles = iframe => {

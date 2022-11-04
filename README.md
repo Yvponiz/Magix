@@ -1,4 +1,4 @@
-# Magix
+# Metal Gear Magix
 Mon interface graphique pour le jeu Magix utilisant Magix API
 
 ## Le jeu Magix

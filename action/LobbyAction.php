@@ -19,7 +19,7 @@
                 $result = parent::callAPI("games/auto-match", $data);
 
                 if ($result === "CREATED_PVP" || $result === "JOINED_PVP" ){
-                    header("location:jeu.php");
+                    header("location:game.php");
                     exit;
                 }
                 else{
