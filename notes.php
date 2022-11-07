@@ -5,7 +5,7 @@
     $action = new NotesAction();
     $data = $action->execute();
 
-    require_once("partial/lobby-h.php");
+    require_once("partial/header.php");
 ?>
 
 <div class="wrapper-notes" id="wrapper-notes">
@@ -51,3 +51,5 @@
     ?>
 
 </div>
+<?php
+    require_once("partial/footer.php");

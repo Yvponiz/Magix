@@ -7,7 +7,7 @@
     require_once("partial/header.php");
 
 ?>
-    <div class="wrapper-index">
+    <div class="wrapper-index main-container">
         <div class="title">
             Metal Gear Magix
         </div>
@@ -44,4 +44,5 @@
             </div>
         </div>
     </div>
-</body>
+    <?php
+    require_once("partial/footer.php");

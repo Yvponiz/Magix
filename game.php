@@ -8,7 +8,7 @@
     require_once("partial/header.php");
 ?>
 
-<div class="wrapper-jeu" id="wrapper-jeu">
+<div class="wrapper-jeu main-container" id="wrapper-jeu">
     <div class="opponent">
         <div class="opponent-hand" id="opponent-hand"></div>
         <div class="opponent-info">
@@ -53,3 +53,5 @@
         </div>
     </div>
 </div>
+<?php
+    require_once("partial/footer.php");

@@ -1,17 +1,16 @@
 <?php
-require_once("action/LobbyAction.php");
+    require_once("action/LobbyAction.php");
 
-$action = new LobbyAction();
-$data = $action->execute();
+    $action = new LobbyAction();
+    $data = $action->execute();
 
-require_once("partial/header.php");
+    require_once("partial/header.php");
 ?>
 
 
-<div class="wrapper-lobby">
+<div class="wrapper-lobby main-container">
     <div class="deck-manager">
-        <iframe style="width:100%" 
-            src="https://magix.apps-de-cours.com/server/#/deck/<?= $data["key"] ?>">
+        <iframe style="width:100%" src="https://magix.apps-de-cours.com/server/#/deck/<?= $data["key"] ?>">
         </iframe>
         <button class="deck-manager-close">Close</button>
     </div>
@@ -27,11 +26,9 @@ require_once("partial/header.php");
         <div class="choice">
             <a href="?practice=true">Training</a>
         </div>
-        
         <div class="choice">
             <span class="lobby-deck-btn">Deck</span>
         </div>
-       
         <div class="choice">
             <a href="notes.php">Notes</a>
         </div>
@@ -52,3 +49,5 @@ require_once("partial/header.php");
     </div>
 
 </div>
+<?php
+    require_once("partial/footer.php");

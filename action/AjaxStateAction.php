@@ -7,11 +7,11 @@
             parent::__construct(CommonAction::$VISIBILITY_MEMBER);
         }
 
-		protected function executeAction() {
+        protected function executeAction() {
             $data = [];
             $data["key"] = $_SESSION["key"];
             $results = "";
-            
+
             if (isset($_POST["action"])){
                 $data["type"] = $_POST["action"];
                 if (isset($_POST["uid"])){
@@ -22,10 +22,10 @@
                 }
                 $results = parent::callAPI("games/action", $data);
             }
-            else {
+            else{
                 $results = parent::callAPI("games/state", $data);
             }
 
             return compact("results");
-		}
+        }
     }
