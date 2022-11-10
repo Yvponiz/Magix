@@ -41,13 +41,13 @@
 
         <div class="right-flex">
             <div class="right-flex-choice">
-                <button onclick="playerAction('HERO_POWER')" id="hero-power">Hero Power</button>
+                <button onclick="action('HERO_POWER')" id="hero-power">Hero Power</button>
             </div>
             <div class="right-flex-choice">
-                <button onclick="playerAction('END_TURN')" id="end-turn">End Turn</button>
+                <button onclick="action('END_TURN')" id="end-turn">End Turn</button>
             </div>
             <div class="right-flex-choice">
-                <button onclick="playerAction('SURRENDER')" id="surrender">Surrender</button>
+                <button onclick="action('SURRENDER')" id="surrender">Surrender</button>
             </div>
             <div class="timer" id="timer"></div>
         </div>

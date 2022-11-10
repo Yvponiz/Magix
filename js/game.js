@@ -1,28 +1,27 @@
+let yourTurn = true;
+
 const state = () => {
   fetch("ajax-state.php", {   // Il faut créer cette page et son contrôleur appelle
-      method : "POST",       // l’API (games/state)
-      credentials: "include"
+    method: "POST",       // l’API (games/state)
+    credentials: "include"
   })
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
       console.log(data); // contient les cartes/état du jeu.
 
       setTimeout(state, 1000); // Attendre 1 seconde avant de relancer l’appel
-  })
+    })
 }
+
 window.addEventListener("load", () => {
   let path = window.location.pathname;
   let page = path.split("/").pop();
-  if (page == "game.php"){
+  if (page == "game.php") {
 
     setTimeout(state, 1000); // Appel initial (attendre 1 seconde)
   }
 });
 
-// Actions Hero Power, End Turn et Surrender
-// function playerAction(type){
-//  apiCall(type, undefined, undefined, true);
-// }
 
 // // Actions de jeu avec les cartes
 // function cardAction(type, uid) {
@@ -46,7 +45,7 @@ window.addEventListener("load", () => {
 //   }
 // }
 
-// // Fetch les données de ajax-jeu
+// Fetch les données de ajax-jeu
 // function apiCall(type, uid, targetuid, forceRender = false) {
 //   let formData = new FormData();
 //   formData.append("type", type);
@@ -57,18 +56,43 @@ window.addEventListener("load", () => {
 //     formData.append("targetuid", targetuid);
 //   }
 
-//   fetch("ajax-jeu.php", {
+//   fetch("ajax-state.php", {
 //     method: "POST",
 //     credentials: "include",
 //     body: formData
 //   })
 //   .then(response => response.json())
 //   .then(data => {
-//     if (data.result) {
-//       afficherJeu(data, forceRender);
-//     }
+//     console.log(data);
 //   })
 // }
+
+function action(action, uid, target) {
+  if (yourTurn) {
+    formData = new FormData();
+    formData.append("action", action);
+    if (uid != null) {
+      formData.append("uid", uid);
+    }
+    if (target != null) {
+      formData.append("targetuid", target);
+    }
+
+    fetch("ajax-state.php", {
+      method: "POST",
+      credentials: "include",
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+  }
+  else {
+    console.log("WRONG_TURN");
+  }
+}
+
 
 
 // let hasGameRendered = false; // Vérifie si le jeu a été render une fois sinon crash
