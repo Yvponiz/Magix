@@ -51,7 +51,9 @@
             </div>
             <div class="timer" id="timer"></div>
         </div>
+
     </div>
+    <div class="error-message"></div>
 </div>
 <?php
     require_once("partial/footer.php");

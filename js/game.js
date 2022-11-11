@@ -1,4 +1,5 @@
 let yourTurn = true;
+let hasGameRendered = false; // Vérifie si le jeu a été render une fois sinon crash
 
 const state = () => {
   fetch("ajax-state.php", {   // Il faut créer cette page et son contrôleur appelle
@@ -86,6 +87,12 @@ function action(action, uid, target) {
       .then(response => response.json())
       .then(data => {
         console.log(data);
+        if(typeof data != "string"){
+          console.log(data);
+      }
+      else{
+          showError(data);
+      }
       })
   }
   else {
@@ -95,7 +102,7 @@ function action(action, uid, target) {
 
 
 
-// let hasGameRendered = false; // Vérifie si le jeu a été render une fois sinon crash
+
 // let lastActionId = 0; // Tracker la derniere action
 
 // function afficherJeu(gameState, forceRender) {
@@ -272,36 +279,36 @@ function action(action, uid, target) {
 //   }
 // }
 
-// function showError(error){
-//   errorMsg = "";
-//   if(error == "NOT_ENOUGH_ENERGY"){
-//       errorMsg = "You don't have enough souls";
-//   }
-//   else if(error == "BOARD_IS_FULL"){
-//       errorMsg = "The board is full";
-//   }
-//   else if(error == "CARD_IS_SLEEPING"){
-//       errorMsg = "Give this minon some time before attacking";
-//   }
-//   else if(error == "MUST_ATTACK_TAUNT_FIRST"){
-//       errorMsg = "A minion with taunt is blocking the way";
-//   }
-//   else if(error == "OPPONENT_CARD_HAS_STEALTH"){
-//       errorMsg = "This minion is too stealthy for you";
-//   }
-//   else if(error == "HERO_POWER_ALREADY_USED"){
-//       errorMsg = "You already used your power this turn";
-//   }
-//   else if(error == "WRONG_TURN"){
-//       errorMsg = "Wait your turn";
-//   }
-//   else{
-//       errorMsg = error;
-//   }
+function showError(error){
+  errorMsg = "";
+  if(error == "NOT_ENOUGH_ENERGY"){
+      errorMsg = "You don't have enough souls";
+  }
+  else if(error == "BOARD_IS_FULL"){
+      errorMsg = "The board is full";
+  }
+  else if(error == "CARD_IS_SLEEPING"){
+      errorMsg = "Give this minon some time before attacking";
+  }
+  else if(error == "MUST_ATTACK_TAUNT_FIRST"){
+      errorMsg = "A minion with taunt is blocking the way";
+  }
+  else if(error == "OPPONENT_CARD_HAS_STEALTH"){
+      errorMsg = "This minion is too stealthy for you";
+  }
+  else if(error == "HERO_POWER_ALREADY_USED"){
+      errorMsg = "You already used your power this turn";
+  }
+  else if(error == "WRONG_TURN"){
+      errorMsg = "Wait your turn";
+  }
+  else{
+      errorMsg = error;
+  }
 
-//   document.querySelector(".game-error-message").style.display = "flex";
-//   document.querySelector(".game-error-message").innerHTML = errorMsg;
-//   setTimeout(function(){
-//       document.querySelector(".game-error-message").style.display = "none";
-//   }, 2000);
-// }
+  document.querySelector(".error-message").style.display = "flex";
+  document.querySelector(".error-message").innerHTML = errorMsg;
+  setTimeout(function(){
+      document.querySelector(".error-message").style.display = "none";
+  }, 2000);
+}
