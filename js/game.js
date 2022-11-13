@@ -1,4 +1,4 @@
-let yourTurn = true;
+let yourTurn = false;
 let hasGameRendered = false; // Vérifie si le jeu a été render une fois sinon crash
 
 const state = () => {
@@ -10,18 +10,20 @@ const state = () => {
     .then(data => {
       console.log(data); // contient les cartes/état du jeu.
 
+      if (data != "WAITING"){
+        renderGame(data);
+        yourTurn = data.yourTurn;
+      }
+      else if (data === "LAST_GAME_LOST") {
+        showError("You Lost");
+        setTimeout(function () {
+          window.location.href = "lobby.php";
+        }, 2000);
+      }
+
       setTimeout(state, 1000); // Attendre 1 seconde avant de relancer l’appel
     })
 }
-
-window.addEventListener("load", () => {
-  let path = window.location.pathname;
-  let page = path.split("/").pop();
-  if (page == "game.php") {
-
-    setTimeout(state, 1000); // Appel initial (attendre 1 seconde)
-  }
-});
 
 
 // // Actions de jeu avec les cartes
@@ -37,35 +39,12 @@ window.addEventListener("load", () => {
 //         element.removeEventListener('click', onSelectedTarget);
 //       }
 
-//       apiCall(type, uid, targetuid, true);
 //     }
 
 //     for (element of document.querySelectorAll(".opponent-info, #opponent-board .card-frame")){
 //       element.addEventListener('click', onSelectedTarget);
 //     }
 //   }
-// }
-
-// Fetch les données de ajax-jeu
-// function apiCall(type, uid, targetuid, forceRender = false) {
-//   let formData = new FormData();
-//   formData.append("type", type);
-//   if (uid){
-//     formData.append("uid", uid);
-//   }
-//   if(targetuid){
-//     formData.append("targetuid", targetuid);
-//   }
-
-//   fetch("ajax-state.php", {
-//     method: "POST",
-//     credentials: "include",
-//     body: formData
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//     console.log(data);
-//   })
 // }
 
 function action(action, uid, target) {
@@ -87,12 +66,12 @@ function action(action, uid, target) {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        if(typeof data != "string"){
+        if (typeof data != "string") {
           console.log(data);
-      }
-      else{
+        }
+        else {
           showError(data);
-      }
+        }
       })
   }
   else {
@@ -100,60 +79,19 @@ function action(action, uid, target) {
   }
 }
 
-
-
-
 // let lastActionId = 0; // Tracker la derniere action
 
-// function afficherJeu(gameState, forceRender) {
-//   if(typeof gameState.result === "string"){
-//     const responseDiv = document.getElementById("wrapper-jeu");
-//     let result = gameState.result;
+const renderGame = (data) => {
+  //Render static fields
+  document.querySelector(".timer").innerHTML = data.remainingTurnTime;
+  document.querySelector(".info-hp").innerHTML = data.hp;
+  document.querySelector(".info-mp").innerHTML = data.mp;
+  document.querySelector(".info-cards").innerHTML = data.remainingCardsCount;
 
-//     // while (responseDiv.firstChild) {
-//     //   responseDiv.removeChild(responseDiv.firstChild);
-//     // }
-
-//     // for (const erreur of result) {
-//     //   const popup = document.createElement("div");
-//     //   responseDiv.appendChild(popup);
-//     //   popup.outerHTML = genererMessage(erreur);
-//     // }
-//     return;
-//   }
-
-//   if(gameState.result.latestActions.length && gameState.result.latestActions[gameState.result.latestActions.length - 1].id > lastActionId){
-//     lastActionId = gameState.result.latestActions[gameState.result.latestActions.length - 1].id;
-//     forceRender = true;
-//   }
-
-//   if(!hasGameRendered || !gameState.result.yourTurn || forceRender){
-//     hasGameRendered = true;
-//     renderPlayer(gameState);
-//     renderBoard(gameState);
-//     renderOpponent(gameState);
-//     renderOpponentBoard(gameState);
-//   }
-
-//   const timer = document.getElementById("timer");
-//   timer.innerHTML = gameState.result.remainingTurnTime;
-
-//   const opponentClass = document.getElementById("opponent-info-class");
-
-//   if(gameState.result.yourTurn){
-//     for(element of hand.querySelectorAll(".card-frame")){
-//       element.style.border = "solid 4px blue";
-//     }
-//     opponentClass.style.border ="";
-//   }
-//   else{
-//     opponentClass.style.border = "solid 4px red";
-//     opponentClass.style.borderRadius = "5px";
-//     for(element of hand.querySelectorAll(".card-frame")){
-//       element.style.border = "";
-//     }
-//   }
-// }
+  document.querySelector(".opponent-info-hp").innerHTML = data.opponent.hp
+  document.querySelector(".opponent-info-mp").innerHTML = data.opponent.mp
+  document.querySelector(".opponent-cards").innerHTML = data.opponent.remainingCardsCount;
+}
 
 // function renderPlayer(gameState){
 //   const hand = document.getElementById("hand");
@@ -211,12 +149,12 @@ function action(action, uid, target) {
 //   }
 // }
 
-// function renderOpponent(gameState){
-//   const opponentHp = document.getElementById("opponent-hp");
-//   const opponentMp = document.getElementById("opponent-mp");
-//   const opponentHand = document.getElementById("opponent-hand");
-//   const opponentCardsLeft = document.getElementById("opponent-cards-remaining");
-//   const opponentClass = document.getElementById("opponent-info-class");
+// function renderOpponent(data){
+//   const opponentHp = document.querySelector(".opponent-hp");
+//   const opponentMp = document.querySelector(".opponent-mp");
+//   const opponentHand = document.querySelector(".opponent-hand");
+//   const opponentCardsLeft = document.querySelector(".opponent-cards-remaining");
+//   const opponentClass = document.querySelector(".opponent-class");
 
 //   // Supprimer le Hero Class dans le div
 //   while (opponentClass.firstChild) {
@@ -230,21 +168,21 @@ function action(action, uid, target) {
 
 //   // Afficher le Hero Class dans le div
 //   var heroImg = document.createElement("img");
-//   heroImg.src = `images/class/${gameState.result.opponent.heroClass}.jpg`;
+//   heroImg.src = `images/class/${data.result.opponent.heroClass}.jpg`;
 //   heroImg.className = "hero-class-frame";
 //   opponentClass.appendChild(heroImg);
 
 //   // Afficher cartes dans la hand de l'opponent
-//   for (let i = 0; i < gameState.result.opponent.handSize; i++) {
+//   for (let i = 0; i < data.result.opponent.handSize; i++) {
 //     const oppCarte = document.createElement("div");
 //     oppCarte.className = "opponent-hand-size"
 //     opponentHand.appendChild(oppCarte);
 //   }
 
 //   // Affichage des stats de l'adversaire
-//   opponentHp.innerHTML = gameState.result.opponent.hp;
-//   opponentMp.innerHTML = gameState.result.opponent.mp;
-//   opponentCardsLeft.innerHTML = gameState.result.remainingCardsCount;
+//   opponentHp.innerHTML = data.result.opponent.hp;
+//   opponentMp.innerHTML = data.result.opponent.mp;
+//   opponentCardsLeft.innerHTML = data.result.remainingCardsCount;
 // }
 
 // function renderOpponentBoard(gameState){
@@ -279,36 +217,45 @@ function action(action, uid, target) {
 //   }
 // }
 
-function showError(error){
-  errorMsg = "";
-  if(error == "NOT_ENOUGH_ENERGY"){
-      errorMsg = "You don't have enough souls";
+function showError(error) {
+  let errorMsg = "";
+  if (error == "NOT_ENOUGH_ENERGY") {
+    errorMsg = "You don't have enough energy";
   }
-  else if(error == "BOARD_IS_FULL"){
-      errorMsg = "The board is full";
+  else if (error == "BOARD_IS_FULL") {
+    errorMsg = "The board is full";
   }
-  else if(error == "CARD_IS_SLEEPING"){
-      errorMsg = "Give this minon some time before attacking";
+  else if (error == "CARD_IS_SLEEPING") {
+    errorMsg = "Give this minon some time before attacking";
   }
-  else if(error == "MUST_ATTACK_TAUNT_FIRST"){
-      errorMsg = "A minion with taunt is blocking the way";
+  else if (error == "MUST_ATTACK_TAUNT_FIRST") {
+    errorMsg = "A minion with taunt is blocking the way";
   }
-  else if(error == "OPPONENT_CARD_HAS_STEALTH"){
-      errorMsg = "This minion is too stealthy for you";
+  else if (error == "OPPONENT_CARD_HAS_STEALTH") {
+    errorMsg = "This minion is too stealthy for you";
   }
-  else if(error == "HERO_POWER_ALREADY_USED"){
-      errorMsg = "You already used your power this turn";
+  else if (error == "HERO_POWER_ALREADY_USED") {
+    errorMsg = "You already used your power this turn";
   }
-  else if(error == "WRONG_TURN"){
-      errorMsg = "Wait your turn";
+  else if (error == "WRONG_TURN") {
+    errorMsg = "Wait your turn";
   }
-  else{
-      errorMsg = error;
+  else {
+    errorMsg = error;
   }
 
   document.querySelector(".error-message").style.display = "flex";
   document.querySelector(".error-message").innerHTML = errorMsg;
-  setTimeout(function(){
-      document.querySelector(".error-message").style.display = "none";
+  setTimeout(function () {
+    document.querySelector(".error-message").style.display = "none";
   }, 2000);
 }
+
+window.addEventListener("load", () => {
+  let path = window.location.pathname;
+  let page = path.split("/").pop();
+  if (page == "game.php") {
+
+    setTimeout(state, 1000); // Appel initial (attendre 1 seconde)
+  }
+});

@@ -12,11 +12,11 @@
     <div class="opponent">
         <div class="opponent-hand" id="opponent-hand"></div>
         <div class="opponent-info">
-            <div class="opponent-info-hp" id="opponent-hp"></div>
-            <div class="opponent-info-class" id="opponent-info-class" data-uid="0"></div>
+            <div class="opponent-info-hp" id="opponent-hp">30</div>
+            <div class="opponent-info-class" id="opponent-info-class"></div>
             <div class="opponent-info-mp" id="opponent-mp"></div>
         </div>
-        <div class="info-cards-remaining" style="align-self:flex-start;" id="opponent-cards-remaining"></div>
+        <div class="opponent-cards cards-remaining" style="align-self:flex-start;" id="opponent-cards-remaining">30</div>
     </div>
 
     <div class="board" id="opponent-board"></div>
@@ -32,9 +32,9 @@
 
     <div class="bottom-section">
         <div class="info-flex">
-            <div class="info-hp" id="info-hp"></div>
+            <div class="info-hp" id="info-hp">30</div>
             <div class="info-mp" id="info-mp"></div>
-            <div class="info-cards-remaining" id="info-cards-remaining"></div>
+            <div class="info-cards cards-remaining" id="info-cards-remaining">30</div>
         </div>
 
         <div class="hand" id="hand"></div>
@@ -49,7 +49,7 @@
             <div class="right-flex-choice">
                 <button onclick="action('SURRENDER')" id="surrender">Surrender</button>
             </div>
-            <div class="timer" id="timer"></div>
+            <div class="timer" id="timer">50</div>
         </div>
 
     </div>
