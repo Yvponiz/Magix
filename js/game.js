@@ -1,5 +1,6 @@
 let yourTurn = false;
-let hasGameRendered = false; // Vérifie si le jeu a été render une fois sinon crash
+let firstRender = true;
+let waiting = "Finding an opponent";
 
 const state = () => {
   fetch("ajax-state.php", {   // Il faut créer cette page et son contrôleur appelle
@@ -10,15 +11,28 @@ const state = () => {
     .then(data => {
       console.log(data); // contient les cartes/état du jeu.
 
-      if (data != "WAITING"){
+      if (data != "WAITING") {
         renderGame(data);
         yourTurn = data.yourTurn;
       }
       else if (data === "LAST_GAME_LOST") {
-        showError("You Lost");
+        showError(data);
         setTimeout(function () {
           window.location.href = "lobby.php";
         }, 2000);
+      }
+      else if (data === "WAITING"){
+        waitingDiv = document.querySelector(".waiting");
+        if (document.querySelector(".waiting").style.display == ""){
+            document.querySelector(".waiting").style.display = "flex";
+        }
+        document.querySelector(".waiting").innerHTML = waiting;
+        if (waiting == "Finding an opponent..."){
+            waiting = "Finding an opponent";
+        }
+        else{
+            waiting = waiting+".";
+        }
       }
 
       setTimeout(state, 1000); // Attendre 1 seconde avant de relancer l’appel
@@ -82,15 +96,23 @@ function action(action, uid, target) {
 // let lastActionId = 0; // Tracker la derniere action
 
 const renderGame = (data) => {
-  //Render static fields
-  document.querySelector(".timer").innerHTML = data.remainingTurnTime;
-  document.querySelector(".info-hp").innerHTML = data.hp;
-  document.querySelector(".info-mp").innerHTML = data.mp;
-  document.querySelector(".info-cards").innerHTML = data.remainingCardsCount;
+      if (firstRender) {
+      document.querySelector(".opponent-class").style.background = `url(images/class/${data.opponent.heroClass}.jpg)`;
 
-  document.querySelector(".opponent-info-hp").innerHTML = data.opponent.hp
-  document.querySelector(".opponent-info-mp").innerHTML = data.opponent.mp
-  document.querySelector(".opponent-cards").innerHTML = data.opponent.remainingCardsCount;
+      firstRender = false;
+   }
+    
+    //Render static fields
+    document.querySelector(".timer").innerHTML = data.remainingTurnTime;
+    document.querySelector(".info-hp").innerHTML = data.hp;
+    document.querySelector(".info-mp").innerHTML = data.mp;
+    document.querySelector(".info-cards").innerHTML = data.remainingCardsCount;
+    
+    if (data.opponent){
+      document.querySelector(".opponent-hp").innerHTML = data.opponent.hp
+      document.querySelector(".opponent-mp").innerHTML = data.opponent.mp
+      document.querySelector(".opponent-cards").innerHTML = data.opponent.remainingCardsCount;
+    }
 }
 
 // function renderPlayer(gameState){
@@ -239,6 +261,9 @@ function showError(error) {
   }
   else if (error == "WRONG_TURN") {
     errorMsg = "Wait your turn";
+  }
+  else if (error = "LAST_GAME_LOST"){
+    errorMsg = "You lost"
   }
   else {
     errorMsg = error;

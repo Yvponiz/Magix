@@ -225,7 +225,7 @@ div .choice :hover{
 /* ============================================= Game ============================================= */
 
 
-.wrapper-jeu {
+.wrapper-game {
     background-color:black;
     background-repeat: no-repeat;
     background-size: 100%;
@@ -267,6 +267,31 @@ div .choice :hover{
     font-weight: bolder;
 }
 
+.hero-class-frame{
+    background-repeat: no-repeat;
+    background-position: center;
+
+    border: double solid rgba(36, 102, 50) 5px;
+    border-radius: 40%;
+}
+
+.waiting{
+    display: none;
+    position: absolute;
+    left: 25%;
+    top: 20%;
+    width: 50%;
+    height: 50%;
+    background-size: auto, auto, auto, auto, 100%;
+    background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+    background-position: 0% 100%, 0% 0%, 100% 0%, 100% 100%,top;
+    color: white;
+    font-size: 3em;
+    z-index: 5;
+    justify-content: center;
+    align-items: center;
+}
+
 /* ------ Top ------*/
 
 .opponent {
@@ -275,6 +300,12 @@ div .choice :hover{
     order: 1;
     background-color: rgba(128, 128, 128, 0.452);
     border-bottom: solid black 2px;
+}
+
+.opponent-class {
+    grid-area: portrait;
+    width: 100px;
+    height: 100px;
 }
 
 .opponent-hand {
@@ -297,7 +328,7 @@ div .choice :hover{
     position: sticky;
 }
 
-.opponent-info-hp {
+.opponent-hp {
     background-image: url("../images/hp.png");
     background-repeat: no-repeat;
     background-size: cover;
@@ -312,7 +343,7 @@ div .choice :hover{
     font-weight: bolder;
 }
 
-.opponent-info-mp {
+.opponent-mp {
     background-image: url("../images/mp.png");
     background-repeat: no-repeat;
     background-size: cover;
@@ -325,14 +356,6 @@ div .choice :hover{
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-size:20px;
     font-weight: bolder;
-}
-
-.hero-class-frame{
-    max-width: 160px;
-    max-height: 120px;
-    align-self: flex-end;
-    border: double solid rgba(36, 102, 50) 5px;
-    border-radius: 5px ;
 }
 
 .opponent-cards-remaining {

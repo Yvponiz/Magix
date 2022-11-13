@@ -8,13 +8,13 @@
     require_once("partial/header.php");
 ?>
 
-<div class="wrapper-jeu main-container" id="wrapper-jeu">
+<div class="wrapper-game main-container">
     <div class="opponent">
         <div class="opponent-hand" id="opponent-hand"></div>
         <div class="opponent-info">
-            <div class="opponent-info-hp" id="opponent-hp">30</div>
-            <div class="opponent-info-class" id="opponent-info-class"></div>
-            <div class="opponent-info-mp" id="opponent-mp"></div>
+            <div class="opponent-hp" id="opponent-hp">30</div>
+            <div class="opponent-class hero-class-frame" id="opponent-info-class"></div>
+            <div class="opponent-mp" id="opponent-mp"></div>
         </div>
         <div class="opponent-cards cards-remaining" style="align-self:flex-start;" id="opponent-cards-remaining">30</div>
     </div>
@@ -54,6 +54,7 @@
 
     </div>
     <div class="error-message"></div>
+    <div class="waiting"></div>
 </div>
 <?php
     require_once("partial/footer.php");
