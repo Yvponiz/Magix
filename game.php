@@ -10,16 +10,16 @@
 
 <div class="wrapper-game main-container">
     <div class="opponent">
-        <div class="opponent-hand" id="opponent-hand"></div>
+        <div class="opponent-hand"></div>
         <div class="opponent-info">
-            <div class="opponent-hp" id="opponent-hp">30</div>
-            <div class="opponent-class hero-class-frame" id="opponent-info-class"></div>
-            <div class="opponent-mp" id="opponent-mp"></div>
+            <div class="opponent-hp">30</div>
+            <div class="opponent-class-frame"></div>
+            <div class="opponent-mp">0</div>
         </div>
-        <div class="opponent-cards cards-remaining" style="align-self:flex-start;" id="opponent-cards-remaining">30</div>
+        <div class="opponent-cards cards-remaining" style="align-self:flex-start;">30</div>
     </div>
 
-    <div class="board" id="opponent-board"></div>
+    <div class="opponent-board board"></div>
     <div class="board-chat">
         <button class="toggle-chat" onclick="afficherChat()"></button>
         <div class="chat" id="chat">
@@ -28,13 +28,13 @@
             </iframe>
         </div>
     </div>
-    <div class="board" id="board"></div>
+    <div class="board"></div>
 
     <div class="bottom-section">
         <div class="info-flex">
-            <div class="info-hp" id="info-hp">30</div>
-            <div class="info-mp" id="info-mp"></div>
-            <div class="info-cards cards-remaining" id="info-cards-remaining">30</div>
+            <div class="info-hp">30</div>
+            <div class="info-mp">0</div>
+            <div class="info-cards cards-remaining">30</div>
         </div>
 
         <div class="hand" id="hand"></div>
