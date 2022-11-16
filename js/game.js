@@ -63,7 +63,7 @@ function action(action, uid, target) {
       .then(data => {
         console.log("QUE", data);
         if (typeof data != "string") {
-          console.log("QUO",data);
+          renderGame(data);
         }
         else {
           showError(data);
@@ -71,7 +71,7 @@ function action(action, uid, target) {
       })
   }
   else {
-    console.log("WRONG_TURN");
+    showError("WRONG_TURN");
   }
 }
 
@@ -119,22 +119,20 @@ function renderPlayer(data) {
     const cardDiv = document.createElement("div");
     hand.appendChild(cardDiv);
     cardDiv.outerHTML = genererCarte(card); // Fonction qui inject du HTML dans le div
-
-    // cardDiv.addEventListener("click", function() {action("PLAY", card.uid), console.log("CLICK")});
-
+    
     if (card.cost <= data.mp && yourTurn && data.board.length < 7) {
       cardDiv.style.border = "#a1fbff 2px solid";
     }
+
+    for (element of hand.querySelectorAll(".card-frame")) {
+      element.addEventListener('click', (event) => {
+        let uid = event.currentTarget.getAttribute("data-uid");
+        event.currentTarget.style.border = "solid 4px green"
+        action("PLAY", uid);
+      });
+    }
   }
 
-  for (card of hand.querySelectorAll(".card-frame")) {
-    card.addEventListener('click', (event) => {
-      // let uid = event.currentTarget.getAttribute("data-uid")
-      event.currentTarget.style.border = "solid 4px green"
-      action("PLAY", card.uid);
-      console.log(`UID:${event.currentTarget.uid} CARD:${event.currentTarget.cardName}`);
-    });
-  }
 
 }
 
@@ -205,23 +203,22 @@ function renderOpponentBoard(data) {
   while (opponentBoard.firstChild) {
     opponentBoard.removeChild(opponentBoard.firstChild);
   }
-
+  
   // Ajouter les cartes sur le board de l'opponent
-  //   }
-  for (const card of data.opponent.board) {
+  for (const card of dataOpponent.board) {
     const cardDiv = document.createElement("div");
     opponentBoard.appendChild(cardDiv);
     cardDiv.outerHTML = genererCarte(card);
+    
+    // if (card.mechanics.includes("Taunt")) {
+    //   taunt = true;
+    // }
 
-    if (card.mechanics.includes("Taunt")) {
-      taunt = true;
-    }
+    // if (card.mechanics.includes("Stealth") || (taunt && !card.mechanics.includes("Taunt"))) {
+    //   cardDiv.style.opacity = "80%";
+    // }
 
-    if (card.mechanics.includes("Stealth") || (taunt && !card.mechanics.includes("Taunt"))) {
-      cardDiv.style.opacity = "80%";
-    }
-
-    cardDiv.addEventListener("click", function () { target(card.uid) });
+    // cardDiv.addEventListener("click", function () { target(card.uid) });
   }
 }
 
