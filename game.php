@@ -19,7 +19,8 @@
         <div class="opponent-cards cards-remaining" style="align-self:flex-start;">30</div>
     </div>
 
-    <div class="opponent-board board"></div>
+    <div class="board" id="opponent-board"></div>
+
     <div class="board-chat">
         <button class="toggle-chat" onclick="afficherChat()"></button>
         <div class="chat" id="chat">
@@ -28,7 +29,7 @@
             </iframe>
         </div>
     </div>
-    <div class="board"></div>
+    <div class="board" id="player-board"></div>
 
     <div class="bottom-section">
         <div class="info-flex">

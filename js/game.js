@@ -25,7 +25,7 @@ const state = () => {
         renderGame(data);
         yourTurn = data.yourTurn;
       }
-      else if (data === "WAITING") {
+      else {
         waitingDiv = document.querySelector(".waiting");
         if (document.querySelector(".waiting").style.display == "") {
           document.querySelector(".waiting").style.display = "flex";
@@ -61,7 +61,7 @@ function action(action, uid, target) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("QUE", data);
+        console.log("ACTION", data);
         if (typeof data != "string") {
           renderGame(data);
         }
@@ -132,12 +132,10 @@ function renderPlayer(data) {
       });
     }
   }
-
-
 }
 
 function renderPlayerBoard(data) {
-  const board = document.querySelector(".board");
+  const board = document.getElementById("player-board");
 
   // Supprimer carte sur le board du joueur
   while (board.firstChild) {
@@ -195,7 +193,7 @@ function renderOpponent(data) {
 }
 
 function renderOpponentBoard(data) {
-  const opponentBoard = document.querySelector(".opponent-board");
+  const opponentBoard = document.getElementById("opponent-board");
   const dataOpponent = data.opponent;
   taunt = false;
 
@@ -209,7 +207,7 @@ function renderOpponentBoard(data) {
     const cardDiv = document.createElement("div");
     opponentBoard.appendChild(cardDiv);
     cardDiv.outerHTML = genererCarte(card);
-    
+    console.log("OPPONENT CARD", card)
     // if (card.mechanics.includes("Taunt")) {
     //   taunt = true;
     // }
@@ -254,7 +252,7 @@ function showError(error) {
   else if (error == "WRONG_TURN") {
     errorMsg = "Wait your turn";
   }
-  else if (error = "LAST_GAME_LOST") {
+  else if (error == "LAST_GAME_LOST") {
     errorMsg = "You lost"
   }
   else {
