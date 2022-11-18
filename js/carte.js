@@ -27,7 +27,7 @@ const dictImages = {
 }
 
 
-function genererCarte(dataCarte) {
+function createCard(dataCarte, dataMp, yourTurn) {
     const cost = dataCarte.cost
     const mechanics = dataCarte.mechanics
     const atk = dataCarte.atk
@@ -35,14 +35,19 @@ function genererCarte(dataCarte) {
     let imageURL = "images/cartes/other.jpg"
     let cardName = ""
     let uid = dataCarte.uid
+    let border = "solid 4px gray"   
 
     if(dictImages[dataCarte.id]){
         imageURL = dictImages[dataCarte.id].ImageURL
         cardName = dictImages[dataCarte.id].Name
     }
+
+    if (dataCarte.cost <= dataMp && yourTurn) {
+        border = "#a1fbff 4px solid"
+    }
     
     return `
-        <div class="card-frame" data-uid="${uid}">
+        <div class="card-frame" style="border:${border}" data-uid="${uid}">
             <div class="card-cost">
                 ${cost}
             </div>

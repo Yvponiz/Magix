@@ -118,19 +118,16 @@ function renderPlayer(data) {
   for (const card of data.hand) {
     const cardDiv = document.createElement("div");
     hand.appendChild(cardDiv);
-    cardDiv.outerHTML = genererCarte(card); // Fonction qui inject du HTML dans le div
-    
-    if (card.cost <= data.mp && yourTurn && data.board.length < 7) {
-      cardDiv.style.border = "#a1fbff 2px solid";
-    }
 
-    for (element of hand.querySelectorAll(".card-frame")) {
-      element.addEventListener('click', (event) => {
-        let uid = event.currentTarget.getAttribute("data-uid");
-        event.currentTarget.style.border = "solid 4px green"
-        action("PLAY", uid);
-      });
-    }
+    cardDiv.outerHTML = createCard(card, data.mp, yourTurn);  
+  }
+  
+  for (element of hand.querySelectorAll(".card-frame")) {
+    element.addEventListener('click', (event) => {
+      let uid = event.currentTarget.getAttribute("data-uid");
+      event.currentTarget.style.border = "solid 4px green"
+      action("PLAY", uid);
+    });  
   }
 }
 
@@ -146,7 +143,7 @@ function renderPlayerBoard(data) {
   for (const card of data.board) {
     const cardDiv = document.createElement("div");
     board.appendChild(cardDiv);
-    cardDiv.outerHTML = genererCarte(card);
+    cardDiv.outerHTML = createCard(card);
 
     //Event Listener sur cartes
     cardDiv.addEventListener("click", function () { attack(card.uid, card.state) });
@@ -206,8 +203,7 @@ function renderOpponentBoard(data) {
   for (const card of dataOpponent.board) {
     const cardDiv = document.createElement("div");
     opponentBoard.appendChild(cardDiv);
-    cardDiv.outerHTML = genererCarte(card);
-    console.log("OPPONENT CARD", card)
+    cardDiv.outerHTML = createCard(card);
     // if (card.mechanics.includes("Taunt")) {
     //   taunt = true;
     // }

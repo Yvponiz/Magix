@@ -367,6 +367,7 @@ div .choice :hover{
     justify-content: space-evenly;
     align-items: center;
     order: 3;
+    padding: 10px 0px;
 }
 
 /* ------ Hand ------ */
@@ -428,7 +429,6 @@ div .choice :hover{
     justify-content: space-between;
     background-color: black;
     padding: 10px;
-    border: solid 4px gray;
     border-style: groove;
     width: 150px;
     height: 200px;
