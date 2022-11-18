@@ -3,7 +3,8 @@ let firstRender = true;
 let waiting = "Finding an opponent";
 let attacker = null;
 let taunt = false;
-
+let border = "solid 4px gray";
+let opacity = "100%"
 
 const state = () => {
   fetch("ajax-state.php", {   // Il faut créer cette page et son contrôleur appelle
@@ -81,6 +82,7 @@ const renderGame = (data) => {
   if (firstRender) {
     document.querySelector(".opponent-class-frame").style.background = `url(images/class/${data.opponent.heroClass}.jpg)`;
     document.querySelector(".opponent-class-frame").style.backgroundSize = "cover";
+  
     firstRender = false;
   }
   //Render static fields
@@ -119,15 +121,21 @@ function renderPlayer(data) {
     const cardDiv = document.createElement("div");
     hand.appendChild(cardDiv);
 
-    cardDiv.outerHTML = createCard(card, data.mp, yourTurn);  
+    if (card.cost <= data.mp && yourTurn) {
+      border = "#a1fbff 4px solid"
+    }
+    else {
+      border = "";
+    }
+    cardDiv.outerHTML = createCard(card, border);
   }
-  
+
   for (element of hand.querySelectorAll(".card-frame")) {
     element.addEventListener('click', (event) => {
       let uid = event.currentTarget.getAttribute("data-uid");
       event.currentTarget.style.border = "solid 4px green"
       action("PLAY", uid);
-    });  
+    });
   }
 }
 
@@ -145,23 +153,23 @@ function renderPlayerBoard(data) {
     board.appendChild(cardDiv);
     cardDiv.outerHTML = createCard(card);
 
-    //Event Listener sur cartes
-    cardDiv.addEventListener("click", function () { attack(card.uid, card.state) });
-    if (card.state == "SLEEP") {
-      cardDiv.style.opacity = "80%";
-    }
-    if (card.uid == attacker) {
-      cardDiv.style.border = "solid #dd5304 2px";
-    }
+    // //Event Listener sur cartes
+    // cardDiv.addEventListener("click", function () { attack(card.uid, card.state) });
+    // if (card.state == "SLEEP") {
+    //   cardDiv.style.opacity = "80%";
+    // }
+    // if (card.uid == attacker) {
+    //   cardDiv.style.border = "solid #dd5304 2px";
+    // }
   }
 
-  // for (element of board.querySelectorAll(".card-frame")) {
-  //   element.addEventListener('click', (event) => {
-  //     let uid = event.currentTarget.getAttribute("data-uid")
-  //     event.currentTarget.style.border = "solid 4px green"
-  //     cardAction("ATTACK", uid);
-  //   });
-  // }
+  for (element of board.querySelectorAll(".card-frame")) {
+    element.addEventListener('click', (event) => {
+      let uid = event.currentTarget.getAttribute("data-uid")
+      event.currentTarget.style.border = "solid 4px green"
+      action("ATTACK", uid);
+    });
+  }
 }
 
 function renderOpponent(data) {
@@ -198,32 +206,37 @@ function renderOpponentBoard(data) {
   while (opponentBoard.firstChild) {
     opponentBoard.removeChild(opponentBoard.firstChild);
   }
-  
+
   // Ajouter les cartes sur le board de l'opponent
   for (const card of dataOpponent.board) {
     const cardDiv = document.createElement("div");
     opponentBoard.appendChild(cardDiv);
-    cardDiv.outerHTML = createCard(card);
-    // if (card.mechanics.includes("Taunt")) {
-    //   taunt = true;
-    // }
 
-    // if (card.mechanics.includes("Stealth") || (taunt && !card.mechanics.includes("Taunt"))) {
-    //   cardDiv.style.opacity = "80%";
-    // }
-
+    if (card.mechanics.includes("Taunt")) {
+      taunt = true;
+      border = "4px red solid"
+    }
+    else if (card.mechanics.includes("Stealth")) {
+      opacity = "60%";
+    }
+    else {
+      border = "";
+      opacity= "";
+    }
+    
+    cardDiv.outerHTML = createCard(card, border, opacity );
     // cardDiv.addEventListener("click", function () { target(card.uid) });
   }
 }
 
-// function afficherChat() {
-//   let chatDiv = document.getElementById("chat");
-//   if (chatDiv.style.display === "none") {
-//     chatDiv.style.display = "block";
-//   } else {
-//     chatDiv.style.display = "none";
-//   }
-// }
+function afficherChat() {
+  let chatDiv = document.getElementById("chat");
+  if (chatDiv.style.display === "none") {
+    chatDiv.style.display = "block";
+  } else {
+    chatDiv.style.display = "none";
+  }
+}
 
 function showError(error) {
   let errorMsg = "";
