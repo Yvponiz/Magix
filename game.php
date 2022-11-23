@@ -13,7 +13,7 @@
         <div class="opponent-hand"></div>
         <div class="opponent-info">
             <div class="opponent-hp">30</div>
-            <div class="opponent-class-frame"></div>
+            <div class="opponent-class-frame" onclick="action(target(0))"></div>
             <div class="opponent-mp">0</div>
         </div>
         <div class="opponent-cards cards-remaining" style="align-self:flex-start;">30</div>

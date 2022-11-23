@@ -27,7 +27,7 @@ const dictImages = {
 }
 
 
-function createCard(dataCarte, border, opacity) {
+function createCard(dataCarte) {
     const cost = dataCarte.cost
     const mechanics = dataCarte.mechanics
     const atk = dataCarte.atk
@@ -43,7 +43,7 @@ function createCard(dataCarte, border, opacity) {
     }
 
     return `
-        <div class="card-frame" style="border:${border};opacity:${opacity}" data-uid="${uid}">
+        <div class="card-frame" data-uid="${uid}">
             <div class="card-cost">
                 ${cost}
             </div>

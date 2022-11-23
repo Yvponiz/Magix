@@ -82,12 +82,11 @@ const renderGame = (data) => {
   if (firstRender) {
     document.querySelector(".opponent-class-frame").style.background = `url(images/class/${data.opponent.heroClass}.jpg)`;
     document.querySelector(".opponent-class-frame").style.backgroundSize = "cover";
-  
+
     firstRender = false;
   }
-  //Render static fields
+  //R ender static fields
   document.querySelector(".timer").innerHTML = data.remainingTurnTime;
-
   renderOpponent(data);
   renderOpponentBoard(data);
   renderPlayerBoard(data);
@@ -117,26 +116,24 @@ function renderPlayer(data) {
   }
 
   // Ajouter les cartes dans la main
-  for (const card of data.hand) {
+  data.hand.forEach(card => {
     const cardDiv = document.createElement("div");
+    cardDiv.className = "player-hand-cards";
     hand.appendChild(cardDiv);
 
     if (card.cost <= data.mp && yourTurn) {
-      border = "#a1fbff 4px solid"
+      cardDiv.style.border = "#a1fbff 4px solid"
     }
     else {
       border = "";
     }
-    cardDiv.outerHTML = createCard(card, border);
-  }
-
-  for (element of hand.querySelectorAll(".card-frame")) {
-    element.addEventListener('click', (event) => {
-      let uid = event.currentTarget.getAttribute("data-uid");
-      event.currentTarget.style.border = "solid 4px green"
-      action("PLAY", uid);
-    });
-  }
+    cardDiv.innerHTML = createCard(card, border);
+    
+    // Add event listener on cards
+    cardDiv.addEventListener("click", ()=> {
+      action("PLAY", card.uid )
+    })
+  })
 }
 
 function renderPlayerBoard(data) {
@@ -147,29 +144,27 @@ function renderPlayerBoard(data) {
     board.removeChild(board.firstChild);
   }
 
-  // Ajouter les cartes sur le board du joueur
-  for (const card of data.board) {
+  // Add cards on Player Board
+  data.board.forEach(card => {
     const cardDiv = document.createElement("div");
+    cardDiv.className = "player-board-cards";
     board.appendChild(cardDiv);
-    cardDiv.outerHTML = createCard(card);
+    cardDiv.innerHTML = createCard(card);
 
-    // //Event Listener sur cartes
-    // cardDiv.addEventListener("click", function () { attack(card.uid, card.state) });
-    // if (card.state == "SLEEP") {
-    //   cardDiv.style.opacity = "80%";
-    // }
-    // if (card.uid == attacker) {
-    //   cardDiv.style.border = "solid #dd5304 2px";
-    // }
-  }
+    if (card.state == "SLEEP") {
+      cardDiv.style.opacity = "50%";
+    }
 
-  for (element of board.querySelectorAll(".card-frame")) {
-    element.addEventListener('click', (event) => {
-      let uid = event.currentTarget.getAttribute("data-uid")
-      event.currentTarget.style.border = "solid 4px green"
-      action("ATTACK", uid);
-    });
-  }
+    // Add event listener on cards
+    cardDiv.addEventListener("click", ()=>{
+      attack(card.uid, card.state);
+      console.log("CARD UID:", card.uid, "CARD STATE", card.state);
+      if (card.uid == attacker) {
+        cardDiv.style.border = "solid #dd5304 2px";
+      }
+    })
+
+  });
 }
 
 function renderOpponent(data) {
@@ -199,7 +194,6 @@ function renderOpponent(data) {
 
 function renderOpponentBoard(data) {
   const opponentBoard = document.getElementById("opponent-board");
-  const dataOpponent = data.opponent;
   taunt = false;
 
   // Supprimer carte sur le board de l'opponent
@@ -208,25 +202,26 @@ function renderOpponentBoard(data) {
   }
 
   // Ajouter les cartes sur le board de l'opponent
-  for (const card of dataOpponent.board) {
+  data.opponent.board.forEach(card => {
     const cardDiv = document.createElement("div");
+    cardDiv.className = "opponent-board-cards"
     opponentBoard.appendChild(cardDiv);
 
     if (card.mechanics.includes("Taunt")) {
       taunt = true;
-      border = "4px red solid"
+      cardDiv.style.border = "4px red solid"
     }
     else if (card.mechanics.includes("Stealth")) {
-      opacity = "60%";
+      cardDiv.style.opacity = "60%";
     }
-    else {
-      border = "";
-      opacity= "";
-    }
-    
-    cardDiv.outerHTML = createCard(card, border, opacity );
-    // cardDiv.addEventListener("click", function () { target(card.uid) });
-  }
+
+    cardDiv.innerHTML = createCard(card, border, opacity);
+
+    cardDiv.addEventListener("click", ()=> {
+      console.log("CLICK", card.uid)
+      target(card.uid);
+    })
+  })
 }
 
 function afficherChat() {
@@ -295,7 +290,6 @@ window.addEventListener("load", () => {
   let path = window.location.pathname;
   let page = path.split("/").pop();
   if (page == "game.php") {
-
     setTimeout(state, 1000); // Appel initial (attendre 1 seconde)
   }
 });
