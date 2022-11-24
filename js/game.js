@@ -21,6 +21,12 @@ const state = () => {
           window.location.href = "lobby.php";
         }, 2000);
       }
+      else if (data === "LAST_GAME_WON") {
+        showError(data);
+        setTimeout(function () {
+          window.location.href = "lobby.php";
+        }, 2000);
+      }
       else if (data != "WAITING") {
         document.querySelector(".waiting").style.display = "none";
         renderGame(data);
@@ -42,6 +48,26 @@ const state = () => {
 
       setTimeout(state, 1000); // Attendre 1 seconde avant de relancer l’appel
     })
+}
+
+const renderGame = (data) => {
+  if (firstRender) {
+    document.querySelector(".opponent-class-frame").style.background = `url(images/class/${data.opponent.heroClass}.jpg)`;
+    document.querySelector(".opponent-class-frame").style.backgroundSize = "cover";
+
+    firstRender = false;
+  }
+  // Render static fields
+  document.querySelector(".timer").innerHTML = data.remainingTurnTime;
+  renderOpponent(data);
+  renderOpponentBoard(data);
+  renderPlayerBoard(data);
+  renderPlayer(data);
+
+  // Opponent Stats
+  document.querySelector(".opponent-hp").innerHTML = data.opponent.hp
+  document.querySelector(".opponent-mp").innerHTML = data.opponent.mp
+  document.querySelector(".opponent-cards").innerHTML = data.opponent.remainingCardsCount;
 }
 
 function action(action, uid, target) {
@@ -76,46 +102,31 @@ function action(action, uid, target) {
   }
 }
 
-// let lastActionId = 0; // Tracker la derniere action
-
-const renderGame = (data) => {
-  if (firstRender) {
-    document.querySelector(".opponent-class-frame").style.background = `url(images/class/${data.opponent.heroClass}.jpg)`;
-    document.querySelector(".opponent-class-frame").style.backgroundSize = "cover";
-
-    firstRender = false;
-  }
-  //R ender static fields
-  document.querySelector(".timer").innerHTML = data.remainingTurnTime;
-  renderOpponent(data);
-  renderOpponentBoard(data);
-  renderPlayerBoard(data);
-  renderPlayer(data);
-
-  //Opponent Stats
-  document.querySelector(".opponent-hp").innerHTML = data.opponent.hp
-  document.querySelector(".opponent-mp").innerHTML = data.opponent.mp
-  document.querySelector(".opponent-cards").innerHTML = data.opponent.remainingCardsCount;
-
-}
-
 function renderPlayer(data) {
   const playerHp = document.querySelector(".info-hp");
   const playerMp = document.querySelector(".info-mp");
   const playerCardsCount = document.querySelector(".info-cards");
   const hand = document.querySelector(".hand");
 
-  // Affichage des stats du joueur
+  // Show Player Stats
   playerHp.innerHTML = data.hp;
   playerMp.innerHTML = data.mp;
   playerCardsCount.innerHTML = data.remainingCardsCount;
 
-  // Supprimer carte dans la main
+  // Show if Hero Power is available
+  if(data.heroPowerAlreadyUsed == false && yourTurn && data.mp >= 2){
+    document.getElementById("hero-power").style.backgroundColor = "green"
+  }
+  else{
+    document.getElementById("hero-power").style.backgroundColor = ""
+  }
+
+  // Delete cards in Player hand
   while (hand.firstChild) {
     hand.removeChild(hand.firstChild);
   }
 
-  // Ajouter les cartes dans la main
+  // Delete cards in Player Hand
   data.hand.forEach(card => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "player-hand-cards";
@@ -128,10 +139,10 @@ function renderPlayer(data) {
       border = "";
     }
     cardDiv.innerHTML = createCard(card, border);
-    
+
     // Add event listener on cards
-    cardDiv.addEventListener("click", ()=> {
-      action("PLAY", card.uid )
+    cardDiv.addEventListener("click", () => {
+      action("PLAY", card.uid)
     })
   })
 }
@@ -139,7 +150,7 @@ function renderPlayer(data) {
 function renderPlayerBoard(data) {
   const board = document.getElementById("player-board");
 
-  // Supprimer carte sur le board du joueur
+  // Delete cards on Player Board
   while (board.firstChild) {
     board.removeChild(board.firstChild);
   }
@@ -156,7 +167,7 @@ function renderPlayerBoard(data) {
     }
 
     // Add event listener on cards
-    cardDiv.addEventListener("click", ()=>{
+    cardDiv.addEventListener("click", () => {
       attack(card.uid, card.state);
       console.log("CARD UID:", card.uid, "CARD STATE", card.state);
       if (card.uid == attacker) {
@@ -173,22 +184,18 @@ function renderOpponent(data) {
   const opponentHand = document.querySelector(".opponent-hand");
   const opponentCardsLeft = document.querySelector(".opponent-cards");
 
-  // Affichage des stats de l'adversaire
+  // Show Opponent stats
   opponentHp.innerHTML = data.opponent.hp;
   opponentMp.innerHTML = data.opponent.mp;
   opponentCardsLeft.innerHTML = data.remainingCardsCount;
+  opponentHand.innerHTML = data.opponent.handSize;
 
-  // Supprimer la carte de la main de l'opponent
-  while (opponentHand.firstChild) {
-    opponentHand.removeChild(opponentHand.firstChild);
-  }
-
-  // Afficher cartes dans la hand de l'opponent
-  for (let i = 0; i < data.opponent.handSize; i++) {
-    const oppCarte = document.createElement("div");
-    oppCarte.className = "opponent-hand-size"
-    opponentHand.appendChild(oppCarte);
-  }
+  // // Afficher cartes dans la hand de l'opponent
+  // for (let i = 0; i < data.opponent.handSize; i++) {
+  //   const oppCarte = document.createElement("div");
+  //   oppCarte.className = "opponent-hand-size"
+  //   opponentHand.appendChild(oppCarte);
+  // }
 
 }
 
@@ -217,17 +224,17 @@ function renderOpponentBoard(data) {
 
     cardDiv.innerHTML = createCard(card, border, opacity);
 
-    cardDiv.addEventListener("click", ()=> {
+    cardDiv.addEventListener("click", () => {
       console.log("CLICK", card.uid)
       target(card.uid);
     })
   })
 }
 
-function afficherChat() {
+function showChat() {
   let chatDiv = document.getElementById("chat");
   if (chatDiv.style.display === "none") {
-    chatDiv.style.display = "block";
+    chatDiv.style.display = "flex";
   } else {
     chatDiv.style.display = "none";
   }
@@ -259,6 +266,9 @@ function showError(error) {
   else if (error == "LAST_GAME_LOST") {
     errorMsg = "You lost"
   }
+  else if (error == "LAST_GAME_WON") {
+    errorMsg = "You Won!"
+  }
   else {
     errorMsg = error;
   }
@@ -289,7 +299,17 @@ function target(uid) {
 window.addEventListener("load", () => {
   let path = window.location.pathname;
   let page = path.split("/").pop();
+  let heroPowerDiv = document.getElementById("hero-power");
+  let endTurnDiv = document.getElementById("end-turn");
+  let surrenderDiv = document.getElementById("surrender");
+  let opponentDiv = document.querySelector(".opponent");
+
   if (page == "game.php") {
     setTimeout(state, 1000); // Appel initial (attendre 1 seconde)
+
+    heroPowerDiv.addEventListener("click", () => { action("HERO_POWER") })
+    endTurnDiv.addEventListener("click", () => { action("END_TURN") })
+    surrenderDiv.addEventListener("click", () => { action("SURRENDER") })
+    opponentDiv.addEventListener("click", () => { target(0) })
   }
 });
