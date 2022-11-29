@@ -88,7 +88,6 @@ function action(action, uid, target) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log("ACTION", data);
         if (typeof data != "string") {
           renderGame(data);
         }
@@ -114,10 +113,10 @@ function renderPlayer(data) {
   playerCardsCount.innerHTML = data.remainingCardsCount;
 
   // Show if Hero Power is available
-  if(data.heroPowerAlreadyUsed == false && yourTurn && data.mp >= 2){
+  if (data.heroPowerAlreadyUsed == false && yourTurn && data.mp >= 2) {
     document.getElementById("hero-power").style.backgroundColor = "green"
   }
-  else{
+  else {
     document.getElementById("hero-power").style.backgroundColor = ""
   }
 
@@ -169,7 +168,7 @@ function renderPlayerBoard(data) {
     // Add event listener on cards
     cardDiv.addEventListener("click", () => {
       attack(card.uid, card.state);
-      console.log("CARD UID:", card.uid, "CARD STATE", card.state);
+
       if (card.uid == attacker) {
         cardDiv.style.border = "solid #dd5304 2px";
       }
@@ -203,12 +202,12 @@ function renderOpponentBoard(data) {
   const opponentBoard = document.getElementById("opponent-board");
   taunt = false;
 
-  // Supprimer carte sur le board de l'opponent
+  // Delete cards on Opponent board
   while (opponentBoard.firstChild) {
     opponentBoard.removeChild(opponentBoard.firstChild);
   }
 
-  // Ajouter les cartes sur le board de l'opponent
+  // Add cards on Opponent Board
   data.opponent.board.forEach(card => {
     const cardDiv = document.createElement("div");
     cardDiv.className = "opponent-board-cards"
@@ -225,7 +224,6 @@ function renderOpponentBoard(data) {
     cardDiv.innerHTML = createCard(card, border, opacity);
 
     cardDiv.addEventListener("click", () => {
-      console.log("CLICK", card.uid)
       target(card.uid);
     })
   })
